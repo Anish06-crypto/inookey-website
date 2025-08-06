@@ -127,7 +127,8 @@ const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ isVisible, onToggle }) 
 
     try {
       // Send to backend for AI processing
-      const response = await fetch('http://localhost:5000/api/chat', {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
