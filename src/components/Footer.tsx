@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
           </div>
           
           <div className="flex items-center gap-8">
-            <nav className="flex items-center gap-6">
+            {/* <nav className="flex items-center gap-6">
               <a href="#services" className="text-sm text-gray-300 hover:text-white transition-colors">
                 Case Studies
               </a>
@@ -51,9 +51,9 @@ const Footer: React.FC = () => {
               <a href="#pricing" className="text-sm text-gray-300 hover:text-white transition-colors">
                 Pricing
               </a>
-            </nav>
+            </nav> */}
             
-            <div className="flex items-center gap-4">
+            {/* <div className="flex items-center gap-4">
               <a 
                 href="https://twitter.com/inookey" 
                 target="_blank" 
@@ -72,7 +72,7 @@ const Footer: React.FC = () => {
                 <Youtube className="w-4 h-4" />
                 Youtube
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -92,13 +92,13 @@ const Footer: React.FC = () => {
         {/* Additional Footer Content */}
         <div className="mt-12 text-center">
           <div className="flex flex-col md:flex-row justify-center items-center gap-8 text-sm text-gray-400">
-            <a href="mailto:hello@inookey.com" className="hover:text-white transition-colors">
+            {/* <a href="mailto:hello@inookey.com" className="hover:text-white transition-colors">
               hello@inookey.com
-            </a>
+            </a> */}
             <span className="hidden md:block">•</span>
-            <span>AI Services, Integration & Automation</span>
-            <span className="hidden md:block">•</span>
-            <span>Built with ❤️ for your success</span>
+            <span>Software | Automation | Security | Marketing</span>
+            {/* <span className="hidden md:block">•</span>
+            <span>Built with ❤️ for your success</span> */}
           </div>
         </div>
       </div>

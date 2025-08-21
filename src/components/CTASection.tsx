@@ -58,9 +58,9 @@ const CTASection: React.FC = () => {
                 <Rocket size={20} />
                 Join today
               </button> */}
-              <a href="#pricing" className="border border-white text-white px-8 py-4 text-lg font-semibold rounded-lg hover:bg-white hover:text-black transition-colors">
+              {/* <a href="#pricing" className="border border-white text-white px-8 py-4 text-lg font-semibold rounded-lg hover:bg-white hover:text-black transition-colors">
                 See our plans
-              </a>
+              </a> */}
             </motion.div>
           </motion.div>
 

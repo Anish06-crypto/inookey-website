@@ -5,6 +5,43 @@ const ollama = new Ollama({
   host: process.env.OLLAMA_HOST || 'http://127.0.0.1:11434'
 });
 
+// Simple in-memory cache for common responses (5 minutes TTL)
+const responseCache = new Map();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+// Function to generate cache key
+function generateCacheKey(message, intent) {
+  return `${intent}:${message.toLowerCase().trim().slice(0, 100)}`;
+}
+
+// Function to get cached response
+function getCachedResponse(cacheKey) {
+  const cached = responseCache.get(cacheKey);
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+    console.log('🚀 Cache hit for:', cacheKey);
+    return cached.data;
+  }
+  return null;
+}
+
+// Function to cache response
+function cacheResponse(cacheKey, response) {
+  responseCache.set(cacheKey, {
+    data: response,
+    timestamp: Date.now()
+  });
+  
+  // Clean old cache entries periodically
+  if (responseCache.size > 100) {
+    const cutoffTime = Date.now() - CACHE_TTL;
+    for (const [key, value] of responseCache.entries()) {
+      if (value.timestamp < cutoffTime) {
+        responseCache.delete(key);
+      }
+    }
+  }
+}
+
 // Inookey-specific knowledge base and context
 const INOOKEY_CONTEXT = `
 You are Inookey's virtual receptionist - a warm, friendly assistant who welcomes visitors and helps them understand how we can help their business.
@@ -27,11 +64,14 @@ SIMPLE ANSWERS:
 
 RESPONSE STYLE:
 - Be warm, friendly, and conversational like a receptionist
-- Keep responses short and easy to understand
+- Keep responses short and easy to understand (2-3 sentences max)
 - Don't be overly technical - speak in simple terms
 - Always offer to connect them with our team
 - Focus on how we can help THEM specifically
 - Sound genuinely interested in helping
+- Use bullet points or numbered lists for multiple items
+- Bold important information like **timelines** and **key benefits**
+- End with a helpful question or next step
 
 BOOKING MEETINGS:
 When someone wants to schedule:
@@ -139,8 +179,19 @@ function generateSuggestions(intent, message) {
 // Main AI processing function
 async function processMessage(message, conversationHistory = []) {
   try {
+    console.time('AI Processing Time');
+    
     // Classify user intent
     const intentAnalysis = classifyIntent(message);
+    
+    // Check cache for similar responses (only for common intents)
+    const cacheKey = generateCacheKey(message, intentAnalysis.intent);
+    const cachedResponse = getCachedResponse(cacheKey);
+    
+    if (cachedResponse && ['services', 'pricing', 'process'].includes(intentAnalysis.intent)) {
+      console.timeEnd('AI Processing Time');
+      return cachedResponse;
+    }
     
     // Build conversation context
     const conversationContext = conversationHistory
@@ -160,7 +211,7 @@ Please provide a helpful, informative response as Inookey AI. Be specific about 
 
 RESPONSE:`;
 
-    // Get response from Ollama
+    // Get response from Ollama with optimized settings for speed
     const response = await ollama.chat({
       model: process.env.OLLAMA_MODEL || 'llama3.1:8b',
       messages: [
@@ -180,7 +231,13 @@ RESPONSE:`;
       options: {
         temperature: 0.7,
         top_p: 0.9,
-        max_tokens: 500
+        top_k: 40,          // Limit vocabulary for faster generation
+        max_tokens: 300,    // Reduced from 500 for faster responses
+        num_predict: 300,   // Limit prediction length
+        repeat_penalty: 1.1,
+        num_ctx: 2048,      // Reduced context window for speed
+        num_thread: 8,      // Use multiple threads
+        num_gpu: 1          // Use GPU if available
       }
     });
 
@@ -189,12 +246,18 @@ RESPONSE:`;
     // Generate suggestions based on intent
     const suggestions = generateSuggestions(intentAnalysis.intent, message);
 
-    return {
+    const result = {
       response: aiResponse,
       intent: intentAnalysis.intent,
       confidence: intentAnalysis.confidence,
       suggestions
     };
+
+    // Cache the response for future use
+    cacheResponse(cacheKey, result);
+    
+    console.timeEnd('AI Processing Time');
+    return result;
 
   } catch (error) {
     console.error('❌ AI processing error:', error);

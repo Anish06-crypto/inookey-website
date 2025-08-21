@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import SplineSceneAdvanced from './components/SplineSceneAdvanced';
 import ServicesSection from './components/ServicesSection';
 import ProcessSteps from './components/ProcessSteps';
@@ -9,6 +9,10 @@ import CalendarSection from './components/CalendarSection';
 import Footer from './components/Footer';
 import VoiceAssistant from './components/VoiceAssistant';
 import BrandsSection from './components/BrandsSection';
+import Logo from './components/Logo';
+import Loader from './components/Loader';
+import RotatingText from './components/RotatingText';
+import { isAiChatEnabled, logFeatureFlags } from './config/features';
 
 interface NavigationLink {
   href: string;
@@ -18,36 +22,46 @@ interface NavigationLink {
 const navigationLinks: NavigationLink[] = [
   { href: '#services', label: 'Services' },
   { href: '#process', label: 'Process' },
-  { href: '#pricing', label: 'Pricing' },
+  // { href: '#pricing', label: 'Pricing' },
   // { href: '#about', label: 'About' },
-  { href: '#contact', label: 'Contact' },
+  { href: 'https://calendar.app.google/ys9KcqWSSGtT49n98', label: 'Book Your Session' },
 ];
 
 const App: React.FC = () => {
   const [isVoiceAssistantVisible, setIsVoiceAssistantVisible] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Log feature flags in development
+  if (process.env.NODE_ENV === 'development') {
+    logFeatureFlags();
+  }
+
+  // Simulate loading time
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000); // Show loader for 3 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+    <>
+      <AnimatePresence mode="wait">
+        {isLoading && <Loader key="loader" />}
+      </AnimatePresence>
+      <motion.div 
+        className="min-h-screen bg-black text-white overflow-x-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoading ? 0 : 1 }}
+        transition={{ duration: 0.8, ease: "easeInOut" }}
+      >
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/20 border-b border-white/10 shadow-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
-            <motion.div 
-              className="flex items-center space-x-2"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-              <a href="#hero" className="flex rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
-                <div className="bg-black text-white px-4 py-3 font-black text-xl tracking-wider">
-                  INOO
-                </div>
-                <div className="bg-white text-black px-4 py-3 font-black text-xl tracking-wider">
-                  KEY
-                </div>
-              </a>
-            </motion.div>
+            <Logo size="lg" />
 
             {/* Navigation Links */}
             <motion.div 
@@ -56,20 +70,22 @@ const App: React.FC = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             >
-              {navigationLinks.map((link, index) => (
-                <motion.a 
-                  key={link.href}
-                  href={link.href} 
-                  className="relative text-white/90 hover:text-white font-medium transition-all duration-300 group"
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                  whileHover={{ scale: 1.05 }}
-                >
-                  {link.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300 group-hover:w-full"></span>
-                </motion.a>
-              ))}
+                             {navigationLinks.map((link, index) => (
+                 <motion.a 
+                   key={link.href}
+                   href={link.href} 
+                   target={link.href.startsWith('http') ? '_blank' : undefined}
+                   rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                   className="relative text-white/90 hover:text-white font-medium transition-all duration-300 group"
+                   initial={{ opacity: 0, y: -10 }}
+                   animate={{ opacity: 1, y: 0 }}
+                   transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+                   whileHover={{ scale: 1.05 }}
+                 >
+                   {link.label}
+                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300 group-hover:w-full"></span>
+                 </motion.a>
+               ))}
             </motion.div>
 
             {/* Mobile Menu Button */}
@@ -106,30 +122,33 @@ const App: React.FC = () => {
             className="text-xl md:text-3xl lg:text-4xl font-black mb-6 gradient-text leading-tight"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.4 }}
           >
-            We Don't Just Build Software — We Build Thinking Systems.
+            WE BUILD SYSTEMS WHERE{" "}
+            <RotatingText
+              texts={[
+                "SOFTWARE",
+                "AUTOMATION",
+                "SECURITY",
+                "MARKETING"
+              ]}
+              rotationInterval={2000}
+              mainClassName="text-xl md:text-3xl lg:text-4xl font-black gradient-text leading-tight"
+              staggerDuration={0.05}
+              splitBy="characters"
+            />{" "}
+            CONNECT
           </motion.h1>
-          
-          {/* Tagline */}
-          <motion.p 
-            className="text-lg md:text-xl text-gray-300 mb-8 max-w-4xl mx-auto italic"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            Seamless, scalable AI tools crafted by a team that truly gets it.
-          </motion.p>
 
           {/* Subheadline */}
-          <motion.p 
+          {/* <motion.p 
             className="text-xl md:text-2xl text-gray-200 mb-12 max-w-5xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             From workflows that adapt to apps that learn, Inookey delivers intelligent software in just 30 days — so your business can think faster, act smarter, and grow effortlessly.
-          </motion.p>
+          </motion.p> */}
 
           {/* CTA Button */}
           <motion.div
@@ -147,8 +166,13 @@ const App: React.FC = () => {
                 </span>
               </div>
             </button>
-            <a href="#contact" className="border border-white text-white px-8 py-4 text-lg font-semibold rounded-lg hover:bg-white hover:text-black transition-colors flex items-center gap-2">
-              Book Consultation →
+            <a 
+              href="https://calendar.app.google/ys9KcqWSSGtT49n98" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="border border-white text-white px-8 py-4 text-lg font-semibold rounded-lg hover:bg-white hover:text-black transition-colors flex items-center gap-2"
+            >
+              Book Your Session →
             </a>
           </motion.div>
         </div>
@@ -205,26 +229,29 @@ const App: React.FC = () => {
       </section> */}
       
       {/* Pricing Section */}
-      <section id="pricing">
+      {/* <section id="pricing">
         <PricingSection />
-      </section>
+      </section> */}
       
       {/* Calendar Booking Section */}
-      <section id="contact">
+      {/* <section id="contact">
         <CalendarSection />
-      </section>
+      </section> */}
       
       {/* Footer */}
       <Footer />
       
 
 
-      {/* Voice Assistant */}
-      <VoiceAssistant 
-        isVisible={isVoiceAssistantVisible}
-        onToggle={() => setIsVoiceAssistantVisible(!isVoiceAssistantVisible)}
-      />
-    </div>
+      {/* Voice Assistant - Conditionally rendered based on feature flag */}
+      {isAiChatEnabled() && (
+        <VoiceAssistant 
+          isVisible={isVoiceAssistantVisible}
+          onToggle={() => setIsVoiceAssistantVisible(!isVoiceAssistantVisible)}
+        />
+      )}
+    </motion.div>
+    </>
   );
 };
 

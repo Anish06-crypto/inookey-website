@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { Send, Volume2, VolumeX, User, Bot, X, Mic, MicOff, MoreHorizontal, ChevronDown, Minimize2 } from 'lucide-react';
+import FormattedResponse from './FormattedResponse';
 
 interface Message {
   id: string;
@@ -185,16 +186,15 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             )}
 
             <motion.button
-              onClick={() => onSpeak("Hello! I'm your Inookey AI assistant. How can I help you today?")}
-              className={`p-3 rounded-full transition-all duration-200 ${
-                isMuted 
-                  ? 'bg-gray-600/50 text-gray-400 cursor-not-allowed' 
-                  : 'bg-white/20 text-white hover:bg-white/30 hover:scale-110'
-              }`}
-              whileHover={!isMuted ? { scale: 1.1 } : {}}
-              whileTap={!isMuted ? { scale: 0.95 } : {}}
+              className="p-3 rounded-full transition-all duration-200 bg-white/10 text-white/30 cursor-not-allowed opacity-50 relative group"
+              title="Coming Soon"
+              disabled
             >
-              {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+              <Volume2 size={16} />
+              {/* Coming Soon Tooltip */}
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black/80 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                Coming Soon
+              </div>
             </motion.button>
           </div>
         </div>
@@ -253,7 +253,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                   }`}
                   whileHover={{ scale: 1.02 }}
                 >
-                  <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>
+                  {message.sender === 'assistant' ? (
+                    <FormattedResponse content={message.text} />
+                  ) : (
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>
+                  )}
                   <p className={`text-xs mt-2 ${
                     message.sender === 'user' ? 'text-white/70' : 'text-white/60'
                   }`}>
@@ -335,33 +339,29 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             )}
           </div>
           
-          {/* Voice Controls */}
+          {/* Voice Controls - Disabled for now */}
           <motion.button
-            onClick={onToggleListening}
-            className={`p-3 rounded-xl transition-all duration-200 shadow-lg backdrop-blur-sm ${
-              isListening
-                ? 'bg-red-500/80 hover:bg-red-600/80 text-white border border-red-400/50'
-                : 'bg-white/10 hover:bg-white/20 text-white border border-white/20'
-            }`}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            title={isListening ? "Stop listening" : "Start voice input"}
+            className="p-3 rounded-xl transition-all duration-200 shadow-lg backdrop-blur-sm bg-white/5 text-white/30 border border-white/10 cursor-not-allowed opacity-50 relative group"
+            title="Coming Soon"
+            disabled
           >
-            {isListening ? <MicOff size={18} /> : <Mic size={18} />}
+            <Mic size={18} />
+            {/* Coming Soon Tooltip */}
+            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black/80 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+              Coming Soon
+            </div>
           </motion.button>
           
           <motion.button
-            onClick={onToggleMute}
-            className={`p-3 rounded-xl transition-all duration-200 shadow-lg backdrop-blur-sm ${
-              isMuted
-                ? 'bg-white/5 hover:bg-white/10 text-white/60 border border-white/10'
-                : 'bg-green-500/80 hover:bg-green-600/80 text-white border border-green-400/50'
-            }`}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            title={isMuted ? "Unmute voice" : "Mute voice"}
+            className="p-3 rounded-xl transition-all duration-200 shadow-lg backdrop-blur-sm bg-white/5 text-white/30 border border-white/10 cursor-not-allowed opacity-50 relative group"
+            title="Coming Soon"
+            disabled
           >
-            {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+            <Volume2 size={18} />
+            {/* Coming Soon Tooltip */}
+            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black/80 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+              Coming Soon
+            </div>
           </motion.button>
           
           <motion.button

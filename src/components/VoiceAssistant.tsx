@@ -115,222 +115,23 @@ const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ isVisible, onToggle }) 
   }, []);
 
   const handleUserMessage = async (text: string) => {
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      text,
-      sender: 'user',
-      timestamp: new Date()
-    };
-
-    setMessages(prev => [...prev, userMessage]);
-    setIsProcessing(true);
-
-    try {
-      // Send to backend for AI processing
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-      const response = await fetch(`${apiUrl}/api/chat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: text,
-          conversationHistory: messages
-        })
-      });
-
-      const data = await response.json();
-      
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: data.response,
-        sender: 'assistant',
-        timestamp: new Date()
-      };
-
-      setMessages(prev => [...prev, assistantMessage]);
-
-      // Speak the response if not muted
-      if (!isMuted) {
-        speakText(data.response);
-      }
-    } catch (error) {
-      console.error('Error processing message:', error);
-    } finally {
-      setIsProcessing(false);
-      setTranscript('');
-    }
+    // Disabled for now - show coming soon message
+    return;
   };
 
   const toggleListening = useCallback(() => {
-    if (!recognitionRef.current) return;
-
-    if (isListening) {
-      recognitionRef.current.stop();
-    } else {
-      recognitionRef.current.start();
-    }
-  }, [isListening]);
+    // Disabled for now
+    return;
+  }, []);
 
   const toggleMute = () => {
-    setIsMuted(!isMuted);
-    if (synthesisRef.current) {
-      synthesisRef.current.cancel();
-    }
+    // Disabled for now
+    return;
   };
 
   const speakText = async (text: string) => {
-    if (isMuted) return;
-    
-    // Clean up text for more natural speech
-    const cleanedText = text
-      .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold markdown
-      .replace(/\*(.*?)\*/g, '$1') // Remove italic markdown
-      .replace(/\n\n/g, '... ') // Replace double newlines with pauses
-      .replace(/\n/g, ', ') // Replace single newlines with commas
-      .replace(/\t/g, ', ') // Replace tabs with commas
-      .replace(/:/g, '... ') // Replace colons with longer pauses
-      .replace(/;/g, '... ') // Replace semicolons with pauses
-      .replace(/,([^\s])/g, ', $1') // Ensure space after commas
-      .replace(/\.([^\s])/g, '. $1') // Ensure space after periods
-      .replace(/!([^\s])/g, '! $1') // Ensure space after exclamations
-      .replace(/\?([^\s])/g, '? $1') // Ensure space after questions
-      .replace(/([.!?])\s*([A-Z])/g, '$1... $2') // Add pauses between sentences
-      .replace(/\s+/g, ' ') // Remove extra spaces
-      .trim();
-
-    try {
-      // Try to use Coqui TTS server first (much better quality)
-      console.log('🔄 Attempting to use Coqui TTS for:', cleanedText.substring(0, 50) + '...');
-      
-      const controller = new AbortController();
-      // Dynamic timeout based on text length (minimum 15 seconds, +2 seconds per 100 characters)
-      const timeoutMs = Math.max(15000, 15000 + Math.floor(cleanedText.length / 100) * 2000);
-      console.log(`⏱️ Setting timeout to ${timeoutMs}ms for ${cleanedText.length} characters`);
-      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-      
-      const response = await fetch('http://localhost:5001/synthesize', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          text: cleanedText,
-          voice: 'ljspeech'
-        }),
-        signal: controller.signal
-      });
-      
-      clearTimeout(timeoutId);
-
-      if (response.ok) {
-        const audioBlob = await response.blob();
-        console.log(`📊 Audio blob size: ${audioBlob.size} bytes, type: ${audioBlob.type}`);
-        
-        // Check if we actually got audio data
-        if (audioBlob.size > 1000) { // Audio should be at least 1KB
-          const audio = new Audio(URL.createObjectURL(audioBlob));
-          audio.volume = 0.9;
-          
-          // Add more detailed error handling for audio playback
-          audio.onerror = (e) => {
-            console.error('🚨 Audio playback error:', e);
-            console.error('Audio src:', audio.src);
-            console.error('Audio readyState:', audio.readyState);
-            console.log('🔄 Retrying with browser TTS...');
-            playWithBrowserTTS();
-          };
-          
-          audio.onloadstart = () => console.log('🎵 Audio loading started');
-          audio.oncanplay = () => console.log('🎵 Audio can play');
-          audio.onplay = () => console.log('▶️ Audio playback started');
-          audio.onended = () => console.log('⏹️ Audio playback ended');
-          
-          try {
-            // Ensure the audio is ready before playing
-            await new Promise((resolve, reject) => {
-              audio.oncanplaythrough = resolve;
-              audio.onerror = reject;
-              audio.load(); // Force reload of the audio
-            });
-            
-            await audio.play();
-            console.log('🎤 SUCCESS: Using Coqui TTS (Natural Voice)');
-            return;
-          } catch (playError) {
-            console.error('🚨 Audio play() failed:', playError);
-            if (playError instanceof Error) {
-              console.error('Play error details:', {
-                name: playError.name,
-                message: playError.message,
-                code: (playError as any).code
-              });
-            } else {
-              console.error('Play error (non-Error object):', playError);
-            }
-            console.log('🔄 Falling back to browser TTS...');
-          }
-        } else {
-          console.log(`⚠️ Received small audio data (${audioBlob.size} bytes), falling back to browser TTS`);
-        }
-      } else {
-        console.log(`⚠️ TTS server error: ${response.status}, falling back to browser TTS`);
-      }
-    } catch (error) {
-      console.log('⚠️ Coqui TTS unavailable, falling back to browser TTS:', error);
-    }
-
-    // Fallback function
-    const playWithBrowserTTS = () => {
-      // Fallback to browser TTS if Coqui TTS is not available
-      if (!synthesisRef.current) return;
-      
-      const utterance = new SpeechSynthesisUtterance(cleanedText);
-      utterance.rate = 0.75; // Slower for more conversational feel
-      utterance.pitch = 1.1; // Slightly higher for friendlier tone
-      utterance.volume = 0.9;
-      
-      // Try to use the best available female voice
-      const voices = synthesisRef.current.getVoices();
-      const preferredVoices = [
-        'Samantha', 'Susan', 'Allison', 'Ava', 'Serena', 'Zira', 'Hazel',
-        'Microsoft Zira', 'Microsoft Eva', 'Google UK English Female',
-        'Google US English', 'Alex', 'Karen', 'Moira', 'Tessa', 'Veena'
-      ];
-      
-      let selectedVoice = null;
-      for (const voiceName of preferredVoices) {
-        selectedVoice = voices.find(voice => 
-          voice.name.toLowerCase().includes(voiceName.toLowerCase())
-        );
-        if (selectedVoice) break;
-      }
-      
-      if (!selectedVoice) {
-        selectedVoice = voices.find(voice => 
-          voice.name.toLowerCase().includes('female') || 
-          voice.name.toLowerCase().includes('woman') ||
-          voice.name.toLowerCase().includes('girl')
-        );
-      }
-      
-      if (!selectedVoice) {
-        selectedVoice = voices.find(voice => 
-          (voice.lang.startsWith('en') && !voice.name.toLowerCase().includes('male')) ||
-          voice.name.toLowerCase().includes('english')
-        );
-      }
-      
-      if (selectedVoice) {
-        utterance.voice = selectedVoice;
-        console.log('🔊 Using browser TTS:', selectedVoice.name);
-      }
-      
-      synthesisRef.current.speak(utterance);
-    };
-
-    // Call the fallback function
-    playWithBrowserTTS();
+    // Disabled for now
+    return;
   };
 
   if (!isVisible) return null;
@@ -350,22 +151,44 @@ const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ isVisible, onToggle }) 
           <AnimatePresence>
             {showChat && (
               <motion.div
-                className="mb-4"
+                className="mb-4 relative"
                 initial={{ opacity: 0, scale: 0.8, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.8, y: 20 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
               >
-                <ChatInterface 
-                  messages={messages}
-                  onSendMessage={handleUserMessage}
-                  onSpeak={speakText}
-                  isMuted={isMuted}
-                  isListening={isListening}
-                  onToggleListening={toggleListening}
-                  onToggleMute={toggleMute}
-                  onMinimize={() => setShowChat(false)}
-                />
+                {/* Coming Soon Overlay */}
+                <div className="absolute inset-0 bg-black/80 backdrop-blur-sm rounded-2xl z-20 flex items-center justify-center">
+                  <div className="text-center p-6">
+                    <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <MessageCircle size={32} className="text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-2">Coming Soon</h3>
+                    <p className="text-gray-300 text-sm max-w-xs">
+                      Our AI assistant is getting smarter every day. Stay tuned for an amazing experience!
+                    </p>
+                    <button
+                      onClick={() => setShowChat(false)}
+                      className="mt-4 px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-colors duration-200"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+
+                {/* Blurred Chat Interface */}
+                <div className="filter blur-sm pointer-events-none">
+                  <ChatInterface 
+                    messages={messages}
+                    onSendMessage={handleUserMessage}
+                    onSpeak={speakText}
+                    isMuted={isMuted}
+                    isListening={isListening}
+                    onToggleListening={toggleListening}
+                    onToggleMute={toggleMute}
+                    onMinimize={() => setShowChat(false)}
+                  />
+                </div>
               </motion.div>
             )}
           </AnimatePresence>

@@ -24,6 +24,27 @@
     @apply bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent;
   }
 
+  /* Pixelated font for logo */
+  .pixel-text {
+    font-family: 'Courier New', monospace;
+    font-weight: 900;
+    text-rendering: optimizeSpeed;
+    image-rendering: pixelated;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: unset;
+  }
+
+  /* Remove focus outline from logo */
+  .logo-link {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  .logo-link:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
   .glass-effect {
     @apply backdrop-blur-md bg-white/10 border border-white/20;
   }
