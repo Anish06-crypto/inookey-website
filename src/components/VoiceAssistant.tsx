@@ -3,13 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle } from 'lucide-react';
 import ChatInterface from './ChatInterface';
 
-interface Message {
-  id: string;
-  text: string;
-  sender: 'user' | 'assistant';
-  timestamp: Date;
-}
-
 interface VoiceAssistantProps {
   isVisible: boolean;
   onToggle: () => void;
