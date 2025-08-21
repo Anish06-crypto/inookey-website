@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mic, MicOff, MessageCircle, X, Volume2, VolumeX } from 'lucide-react';
-import VoiceAssistantAvatar from './VoiceAssistantAvatar';
+import { MessageCircle } from 'lucide-react';
 import ChatInterface from './ChatInterface';
 
 interface Message {
@@ -18,9 +17,7 @@ interface VoiceAssistantProps {
 
 const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ isVisible, onToggle }) => {
   const [isListening, setIsListening] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
   const [showChat, setShowChat] = useState(false); // Start with chat closed
-  const [messages, setMessages] = useState<Message[]>([]);
   const [transcript, setTranscript] = useState('');
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   
@@ -178,10 +175,10 @@ const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ isVisible, onToggle }) 
                 {/* Blurred Chat Interface */}
                 <div className="filter blur-sm pointer-events-none">
                   <ChatInterface 
-                    messages={messages}
+                    messages={[]} // No messages to display in this simplified version
                     onSendMessage={handleUserMessage}
                     onSpeak={speakText}
-                    isMuted={isMuted}
+                    isMuted={false} // No mute functionality
                     isListening={isListening}
                     onToggleListening={toggleListening}
                     onToggleMute={toggleMute}

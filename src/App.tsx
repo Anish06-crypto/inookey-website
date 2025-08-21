@@ -4,8 +4,6 @@ import SplineSceneAdvanced from './components/SplineSceneAdvanced';
 import ServicesSection from './components/ServicesSection';
 import ProcessSteps from './components/ProcessSteps';
 import CTASection from './components/CTASection';
-// import PricingSection from './components/PricingSection';
-// import CalendarSection from './components/CalendarSection';
 import Footer from './components/Footer';
 import VoiceAssistant from './components/VoiceAssistant';
 import BrandsSection from './components/BrandsSection';
@@ -223,20 +221,7 @@ const App: React.FC = () => {
       {/* Call to Action Section */}
       <CTASection />
       
-      {/* About Section */}
-      {/* <section id="about">
-        <AboutSection />
-      </section> */}
       
-      {/* Pricing Section */}
-      {/* <section id="pricing">
-        <PricingSection />
-      </section> */}
-      
-      {/* Calendar Booking Section */}
-      {/* <section id="contact">
-        <CalendarSection />
-      </section> */}
       
       {/* Footer */}
       <Footer />
