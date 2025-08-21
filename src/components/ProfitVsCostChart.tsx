@@ -25,7 +25,6 @@ const padding = 60;
 
 const ProfitVsCostChart: React.FC = () => {
   const [hoveredPoint, setHoveredPoint] = useState<number | null>(null);
-  const [animationPhase, setAnimationPhase] = useState(0);
 
   // Scale data to fit SVG
   const maxProfit = Math.max(...data.map(d => d.profit));
@@ -60,13 +59,6 @@ const ProfitVsCostChart: React.FC = () => {
   const createPathString = (points: number[][]) => {
     return points.map((p, i) => (i === 0 ? `M${p[0]},${p[1]}` : `L${p[0]},${p[1]}`)).join(' ');
   };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setAnimationPhase(prev => (prev + 1) % 4);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div className="w-full h-full flex items-center justify-center relative">

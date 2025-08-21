@@ -19,19 +19,11 @@ const processSteps: ProcessStep[] = [
 
 const ProcessFlowAnimation: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [flowProgress, setFlowProgress] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentStep(prev => (prev % processSteps.length) + 1);
     }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setFlowProgress(prev => (prev + 1) % 100);
-    }, 50);
     return () => clearInterval(interval);
   }, []);
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollTimeline, TimelineEvent } from './ScrollTimeline';
-import { Brain, Cpu, Zap, Target, Search, Palette, Code, Rocket, Wrench, MapPin } from 'lucide-react';
+import { Search, Palette, Code, Rocket, Wrench, MapPin } from 'lucide-react';
 
 const processEvents: TimelineEvent[] = [
   {

@@ -21,7 +21,6 @@ const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ isVisible, onToggle }) 
   const [isMuted, setIsMuted] = useState(false);
   const [showChat, setShowChat] = useState(false); // Start with chat closed
   const [messages, setMessages] = useState<Message[]>([]);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   

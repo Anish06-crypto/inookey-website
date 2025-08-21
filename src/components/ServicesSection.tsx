@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { BarChart3, Workflow, Users, Zap, Shield, Rocket } from 'lucide-react';
+import { BarChart3, Workflow, Users, Zap, Rocket } from 'lucide-react';
 import ProcessFlowAnimation from './ProcessFlowAnimation';
 import ProfitVsCostChart from './ProfitVsCostChart';
 import Particles from './Particles';
