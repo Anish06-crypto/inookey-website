@@ -171,18 +171,11 @@ const ServicesSection: React.FC = () => {
         >
           Our Services
         </motion.h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-20" style={{
-          gridTemplateAreas: `
-            "card1 card2 card3"
-            "card4 card5 card6"
-          `,
-          gridTemplateColumns: '1fr 1fr 1fr',
-          gridTemplateRows: 'auto auto'
-        }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10 mb-20">
           {services.map((service, idx) => (
             <motion.div
               key={service.title}
-              className="relative bg-gradient-to-br from-white/5 to-white/0 border border-white/10 rounded-2xl p-8 shadow-lg group overflow-hidden hover:shadow-2xl transition-shadow duration-300 backdrop-blur-sm"
+              className="relative bg-gradient-to-br from-white/5 to-white/0 border border-white/10 rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg group overflow-hidden hover:shadow-2xl transition-shadow duration-300 backdrop-blur-sm"
               initial={service.animation.initial}
               whileInView={service.animation.whileInView}
               transition={service.animation.transition}
@@ -195,7 +188,7 @@ const ServicesSection: React.FC = () => {
                   {service.badge}
                 </span>
               </div>
-              <h3 className="text-2xl font-bold mb-2 gradient-text group-hover:text-cyan-300 transition-colors duration-300">
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2 gradient-text group-hover:text-cyan-300 transition-colors duration-300">
                 {service.title}
               </h3>
               {/* Embed animated components in cards */}
@@ -330,22 +323,22 @@ const ServicesSection: React.FC = () => {
                        width="100%"
                        height="100%"
                        viewBox="0 0 100 100"
-                       className="rounded-2xl bg-gradient-to-br from-gray-900/50 to-black/90 border border-white/10 shadow-lg"
-                       style={{ maxWidth: 400, minHeight: 200, width: '100%', height: '200px' }}
+                                             className="rounded-2xl bg-gradient-to-br from-gray-900/50 to-black/90 border border-white/10 shadow-lg"
+                      style={{ maxWidth: 400, minHeight: 120, width: '100%', height: 'auto', aspectRatio: '2/1' }}
                      >
-                       {/* Background grid */}
-                       <defs>
-                         <pattern id="grid5" width="8" height="8" patternUnits="userSpaceOnUse">
-                           <path d="M 8 0 L 0 0 0 8" fill="none" stroke="#37415122" strokeWidth="0.3"/>
-                         </pattern>
+                                               {/* Background grid */}
+                        <defs>
+                          <pattern id="grid5" width="8" height="8" patternUnits="userSpaceOnUse">
+                            <path d="M 8 0 L 0 0 0 8" fill="none" stroke="#37415122" strokeWidth="0.3"/>
+                          </pattern>
                          {/* Gradient definitions */}
                          <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                            <stop offset="0%" stopColor="#a855f7" stopOpacity="0.8"/>
                            <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.6"/>
                            <stop offset="100%" stopColor="#7c3aed" stopOpacity="0.8"/>
                          </linearGradient>
-                       </defs>
-                       <rect x="0" y="0" width="100" height="100" fill="url(#grid5)" />
+                        </defs>
+                        <rect x="0" y="0" width="100" height="100" fill="url(#grid5)" />
                        
                        {/* Central brand logo/icon */}
                        <motion.g transform="translate(50, 50)">
@@ -355,18 +348,18 @@ const ServicesSection: React.FC = () => {
                            cy="0"
                            r="18"
                            fill="url(#brandGradient)"
-                           initial={{ opacity: 0, scale: 0.8 }}
-                           animate={{ 
-                             opacity: [0.8, 1, 0.8],
-                             scale: [1, 1.05, 1]
-                           }}
-                           transition={{ 
-                             duration: 4,
-                             repeat: Infinity,
-                             repeatDelay: 0.5
-                           }}
-                         />
-                         
+                         initial={{ opacity: 0, scale: 0.8 }}
+                         animate={{ 
+                           opacity: [0.8, 1, 0.8],
+                           scale: [1, 1.05, 1]
+                         }}
+                         transition={{ 
+                           duration: 4,
+                           repeat: Infinity,
+                           repeatDelay: 0.5
+                         }}
+                       />
+                       
                          {/* Inner design element */}
                          <motion.path
                            d="M -8 -8 L 8 -8 L 8 8 L -8 8 Z"
@@ -399,17 +392,17 @@ const ServicesSection: React.FC = () => {
                                scale: [0, 1, 0],
                                rotate: [0, 360]
                              }}
-                             transition={{ 
+                           transition={{ 
                                duration: 4,
                                delay: 0,
-                               repeat: Infinity,
+                             repeat: Infinity,
                                ease: "easeInOut"
                              }}
                            />
                            
                            {/* Dot 2 */}
                            <motion.circle
-                             cx="25"
+                              cx="25"
                              cy="0"
                              r="2"
                              fill="#8b5cf6"
@@ -430,7 +423,7 @@ const ServicesSection: React.FC = () => {
                            {/* Dot 3 */}
                            <motion.circle
                              cx="0"
-                             cy="25"
+                              cy="25"
                              r="2"
                              fill="#7c3aed"
                              initial={{ opacity: 0, scale: 0 }}
@@ -465,11 +458,11 @@ const ServicesSection: React.FC = () => {
                                repeat: Infinity,
                                ease: "easeInOut"
                              }}
-                           />
-                         </motion.g>
-                         
+                            />
+                          </motion.g>
+                          
                          {/* Connection lines */}
-                         <motion.g>
+                          <motion.g>
                            {/* Line 1 */}
                            <motion.line
                              x1="0"
@@ -478,7 +471,7 @@ const ServicesSection: React.FC = () => {
                              y2="-25"
                              stroke="url(#brandGradient)"
                              strokeWidth="0.8"
-                             initial={{ opacity: 0 }}
+                              initial={{ opacity: 0 }}
                              animate={{ opacity: [0, 1, 0] }}
                              transition={{ 
                                duration: 2,
@@ -496,7 +489,7 @@ const ServicesSection: React.FC = () => {
                              y2="0"
                              stroke="url(#brandGradient)"
                              strokeWidth="0.8"
-                             initial={{ opacity: 0 }}
+                              initial={{ opacity: 0 }}
                              animate={{ opacity: [0, 1, 0] }}
                              transition={{ 
                                duration: 2,
@@ -514,7 +507,7 @@ const ServicesSection: React.FC = () => {
                              y2="25"
                              stroke="url(#brandGradient)"
                              strokeWidth="0.8"
-                             initial={{ opacity: 0 }}
+                              initial={{ opacity: 0 }}
                              animate={{ opacity: [0, 1, 0] }}
                              transition={{ 
                                duration: 2,
@@ -532,7 +525,7 @@ const ServicesSection: React.FC = () => {
                              y2="0"
                              stroke="url(#brandGradient)"
                              strokeWidth="0.8"
-                             initial={{ opacity: 0 }}
+                              initial={{ opacity: 0 }}
                              animate={{ opacity: [0, 1, 0] }}
                              transition={{ 
                                duration: 2,
@@ -542,10 +535,10 @@ const ServicesSection: React.FC = () => {
                              }}
                            />
                          </motion.g>
-                       </motion.g>
-                       
+                          </motion.g>
+                          
                        {/* Floating design elements */}
-                       <motion.g>
+                          <motion.g>
                          {/* Color palette */}
                          <motion.rect
                            x="15"
@@ -584,24 +577,24 @@ const ServicesSection: React.FC = () => {
                          />
                          
                          {/* Typography elements */}
-                         <motion.text
+                       <motion.text
                            x="75"
                            y="25"
-                           fill="#a855f7"
+                         fill="#a855f7"
                            fontSize="8"
-                           fontFamily="Inter"
-                           fontWeight="600"
-                           initial={{ opacity: 0 }}
+                         fontFamily="Inter"
+                         fontWeight="600"
+                         initial={{ opacity: 0 }}
                            animate={{ opacity: [0, 1, 0] }}
-                           transition={{ 
-                             duration: 2,
+                         transition={{ 
+                           duration: 2,
                              delay: 1.5,
-                             repeat: Infinity,
+                           repeat: Infinity,
                              ease: "easeInOut"
-                           }}
-                         >
+                         }}
+                       >
                            UI/UX
-                         </motion.text>
+                       </motion.text>
                          
                          <motion.text
                            x="80"
@@ -635,8 +628,8 @@ const ServicesSection: React.FC = () => {
                        width="100%"
                        height="100%"
                        viewBox="0 0 100 100"
-                       className="rounded-2xl bg-gradient-to-br from-yellow-900/30 to-black/90 border border-white/10 shadow-lg"
-                       style={{ maxWidth: 400, minHeight: 200, width: '100%', height: '200px' }}
+                                             className="rounded-2xl bg-gradient-to-br from-yellow-900/30 to-black/90 border border-white/10 shadow-lg"
+                      style={{ maxWidth: 400, minHeight: 120, width: '100%', height: 'auto', aspectRatio: '2/1' }}
                      >
                        {/* Background grid */}
                        <defs>
@@ -929,24 +922,24 @@ const ServicesSection: React.FC = () => {
                          >
                            GDPR
                          </motion.text>
-
-                         <motion.text
+                       
+                       <motion.text
                            x="15"
-                           y="90"
+                         y="90"
                            fill="#f59e0b"
                            fontSize="6"
                            fontFamily="monospace"
-                           initial={{ opacity: 0 }}
+                         initial={{ opacity: 0 }}
                            animate={{ opacity: [0, 1, 0] }}
-                           transition={{ 
+                         transition={{ 
                              duration: 3,
                              delay: 2.5,
-                             repeat: Infinity,
+                           repeat: Infinity,
                              ease: "easeInOut"
-                           }}
-                         >
+                         }}
+                       >
                            PCI DSS
-                         </motion.text>
+                       </motion.text>
                        </motion.g>
                        
                       
@@ -968,9 +961,16 @@ const StyledAITriangle = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 20px;
-    padding: 20px;
+    gap: 15px;
+    padding: 15px;
     position: relative;
+  }
+
+  @media (min-width: 640px) {
+    .ai-triangle-container {
+      gap: 20px;
+      padding: 20px;
+    }
   }
 
   .ai-button {
@@ -988,9 +988,16 @@ const StyledAITriangle = styled.div`
     box-shadow: 3px 3px 0px #000000;
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    height: 80px;
-    width: 80px;
+    height: 60px;
+    width: 60px;
     cursor: pointer;
+  }
+
+  @media (min-width: 640px) {
+    .ai-button {
+      height: 80px;
+      width: 80px;
+    }
   }
 
   /* Claude Button */
@@ -1229,21 +1236,37 @@ const StyledSocialCard = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 25px 25px;
-    gap: 20px;
+    padding: 15px;
+    gap: 10px;
     box-shadow: none;
+    flex-wrap: wrap;
+  }
+
+  @media (min-width: 640px) {
+    .card {
+      padding: 25px 25px;
+      gap: 20px;
+    }
   }
 
   /* for all social containers*/
   .socialContainer {
-    width: 52px;
-    height: 52px;
+    width: 40px;
+    height: 40px;
     background-color: rgb(44, 44, 44);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     transition-duration: .3s;
+    border-radius: 8px;
+  }
+
+  @media (min-width: 640px) {
+    .socialContainer {
+      width: 52px;
+      height: 52px;
+    }
   }
   /* instagram*/
   .containerOne:hover {
