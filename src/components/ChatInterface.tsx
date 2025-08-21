@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
-import { Send, Volume2, VolumeX, User, Bot, X, Mic, MicOff, MoreHorizontal, ChevronDown, Minimize2 } from 'lucide-react';
+import { Send, Volume2, User, Bot, X, Mic, MoreHorizontal, ChevronDown, Minimize2 } from 'lucide-react';
 import FormattedResponse from './FormattedResponse';
 
 interface Message {

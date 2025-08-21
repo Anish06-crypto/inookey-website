@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Twitter, Youtube } from 'lucide-react';
 import Particles from './Particles';
 
 const Footer: React.FC = () => {
