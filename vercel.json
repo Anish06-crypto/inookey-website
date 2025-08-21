@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "inookey-ai-assistant",
+  "name": "inookey-landing",
   "builds": [
     {
       "src": "package.json",
@@ -23,8 +23,6 @@
     }
   ],
   "env": {
-    "REACT_APP_API_URL": "@api_url",
-    "REACT_APP_WS_URL": "@ws_url",
     "REACT_APP_ENVIRONMENT": "production"
   }
 }
