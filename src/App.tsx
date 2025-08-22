@@ -10,6 +10,7 @@ import BrandsSection from './components/BrandsSection';
 import Logo from './components/Logo';
 import Loader from './components/Loader';
 import RotatingText from './components/RotatingText';
+import Particles from './components/Particles';
 import { isAiChatEnabled, logFeatureFlags } from './config/features';
 
 interface NavigationLink {
@@ -185,18 +186,36 @@ const App: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* Hero Section with Spline 3D Scene */}
-      <section id="hero" className="min-h-screen flex flex-col justify-end relative">
-        {/* 3D Spline Scene Background */}
-        <div className="absolute inset-0 z-0">
-          <SplineSceneAdvanced className="w-full h-full" />
-        </div>
+                           {/* Hero Section with Spline 3D Scene */}
+        <section id="hero" className="min-h-screen flex flex-col justify-end relative">
+                   {/* 3D Spline Scene Background */}
+          <div className="absolute inset-0 z-10">
+            <SplineSceneAdvanced className="w-full h-full" />
+          </div>
+          
+                                           {/* Particles Overlay - On top of 3D scene */}
+            <div className="absolute inset-0 z-15 pointer-events-none">
+              <Particles 
+                particleCount={400}
+                particleSpread={25}
+                speed={0.15}
+                particleColors={['#60a5fa', '#3b82f6', '#1d4ed8', '#1e40af', '#1e3a8a']}
+                moveParticlesOnHover={false}
+                particleHoverFactor={0}
+                alphaParticles={false}
+                particleBaseSize={80}
+                sizeRandomness={0.4}
+                cameraDistance={15}
+                disableRotation={false}
+                className="w-full h-full"
+              />
+            </div>
+  
+          {/* Overlay for better text readability */}
+          <div className="absolute inset-0 bg-black/30 z-20 pointer-events-none"></div>
 
-        {/* Overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/30 z-10 pointer-events-none"></div>
-
-        {/* Hero Content */}
-        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pb-20">
+                 {/* Hero Content */}
+         <div className="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pb-20">
           {/* Main Headline */}
           <motion.h1 
             className="text-xl md:text-3xl lg:text-4xl font-black mb-6 gradient-text leading-tight"
