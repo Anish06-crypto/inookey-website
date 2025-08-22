@@ -36,6 +36,7 @@ export interface RotatingTextProps
     "children" | "transition" | "initial" | "animate" | "exit"
   > {
   texts: string[];
+  colorMap?: Record<string, string>; // Map of text to color
   transition?: Transition;
   initial?: boolean | Target | VariantLabels;
   animate?: boolean | VariantLabels | TargetAndTransition;
@@ -58,6 +59,7 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
   (props, ref) => {
     const {
       texts,
+      colorMap,
       transition = { type: "spring", damping: 25, stiffness: 300 },
       initial = { y: "100%", opacity: 0 },
       animate = { y: 0, opacity: 1 },
@@ -244,6 +246,9 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
                         "text-rotate-element",
                         elementLevelClassName
                       )}
+                      style={{
+                        color: colorMap?.[texts[currentTextIndex]] || 'inherit'
+                      }}
                     >
                       {char}
                     </motion.span>

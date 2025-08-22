@@ -67,71 +67,96 @@ const SplineSceneAdvanced: React.FC<SplineSceneAdvancedProps> = ({ className }) 
   };
 
   return (
-    <motion.div
-      className={`relative w-full h-full ${className || ''}`}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-      style={{ pointerEvents: 'auto' }}
-      onClick={handleContainerClick}
-      onPointerDown={handlePointerDown}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-    >
-      {/* Loading state */}
-      {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center z-10">
-          <motion.div
-            className="text-white text-lg"
-            animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            Loading 3D Scene...
-          </motion.div>
-        </div>
-      )}
-
-      {/* Spline Scene */}
-      <div 
-        style={{
+    <>
+      {/* Responsive CSS for mobile */}
+      <style>
+        {`
+          @media (max-width: 768px) {
+            .spline-container {
+              width: 100% !important;
+              height: 100% !important;
+              overflow: visible !important;
+            }
+            
+            .spline-scene {
+              width: 100% !important;
+              height: 100% !important;
+              object-fit: contain !important;
+            }
+          }
+        `}
+      </style>
+      
+      <motion.div
+        className={`relative w-full h-full overflow-hidden spline-container ${className || ''}`}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        style={{ 
+          pointerEvents: 'auto',
+          // Standard viewport sizing
           width: '100%',
           height: '100%',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          zIndex: 1,
-          pointerEvents: 'auto',
         }}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          return false;
-        }}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          return false;
-        }}
-        onMouseUp={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          return false;
-        }}
+        onClick={handleContainerClick}
+        onPointerDown={handlePointerDown}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
       >
-        <Spline
-          scene="https://prod.spline.design/YDfflhUHczfhClIJ/scene.splinecode"
-          onLoad={onLoad}
-          onMouseDown={onMouseDown}
-          onMouseUp={onMouseUp}
-          onMouseOver={onMouseOver}
+        {/* Loading state */}
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            <motion.div
+              className="text-white text-lg"
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              Loading 3D Scene...
+            </motion.div>
+          </div>
+        )}
+
+        {/* Spline Scene */}
+        <div 
+          className="relative w-full h-full"
           style={{
-            width: '100%',
-            height: '100%',
-            pointerEvents: 'auto', // Enable pointer events for hover
+            zIndex: 1,
+            pointerEvents: 'auto',
           }}
-        />
-      </div>
-    </motion.div>
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+          }}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+          }}
+          onMouseUp={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+          }}
+        >
+          <Spline
+            className="spline-scene"
+            scene="https://prod.spline.design/YDfflhUHczfhClIJ/scene.splinecode"
+            onLoad={onLoad}
+            onMouseDown={onMouseDown}
+            onMouseUp={onMouseUp}
+            onMouseOver={onMouseOver}
+            style={{
+              width: '100%',
+              height: '100%',
+              // Let Spline handle responsiveness naturally
+              objectFit: 'contain',
+              pointerEvents: 'auto',
+            }}
+          />
+        </div>
+      </motion.div>
+    </>
   );
 };
 

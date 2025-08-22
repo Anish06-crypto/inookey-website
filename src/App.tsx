@@ -212,6 +212,12 @@ const App: React.FC = () => {
                 "SECURITY",
                 "MARKETING"
               ]}
+              colorMap={{
+                "SOFTWARE": "#4169E1",      // Royal Blue
+                "AUTOMATION": "#006400",     // Dark Green
+                "SECURITY": "#8B0000",       // Deep Red
+                "MARKETING": "#FFD700"       // Yellow
+              }}
               rotationInterval={2000}
               mainClassName="text-xl md:text-3xl lg:text-4xl font-black gradient-text leading-tight"
               staggerDuration={0.05}
