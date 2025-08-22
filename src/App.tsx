@@ -28,6 +28,7 @@ const navigationLinks: NavigationLink[] = [
 const App: React.FC = () => {
   const [isVoiceAssistantVisible, setIsVoiceAssistantVisible] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   // Log feature flags in development
   if (process.env.NODE_ENV === 'development') {
@@ -42,6 +43,18 @@ const App: React.FC = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Handle escape key to close mobile menu
+  React.useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isMobileMenuOpen]);
 
   return (
     <>
@@ -88,6 +101,7 @@ const App: React.FC = () => {
 
             {/* Mobile Menu Button */}
             <motion.button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden p-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-300"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -95,13 +109,81 @@ const App: React.FC = () => {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
             >
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
+              {isMobileMenuOpen ? (
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
             </motion.button>
           </div>
         </div>
       </nav>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            className="fixed inset-0 z-[9999] md:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{ pointerEvents: 'auto' }}
+          >
+            {/* Backdrop */}
+            <div 
+              className="absolute inset-0 bg-black/90 backdrop-blur-md"
+              onClick={() => setIsMobileMenuOpen(false)}
+              style={{ pointerEvents: 'auto' }}
+            />
+            
+            {/* Menu Content */}
+            <motion.div
+              className="absolute top-20 left-0 right-0 bg-black/95 border-b border-white/20 backdrop-blur-xl shadow-2xl"
+              initial={{ y: -100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -100, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              style={{ pointerEvents: 'auto' }}
+            >
+              {/* Menu Header with Close Button */}
+              <div className="flex justify-between items-center px-4 py-4 border-b border-white/20">
+                <h3 className="text-white font-semibold text-lg">Menu</h3>
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                >
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              
+              <div className="px-4 py-6 space-y-4">
+                {navigationLinks.map((link, index) => (
+                  <motion.a
+                    key={link.href}
+                    href={link.href}
+                    target={link.href.startsWith('http') ? '_blank' : undefined}
+                    rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    className="block text-white/90 hover:text-white font-medium text-lg py-3 px-4 rounded-lg hover:bg-white/10 transition-all duration-300"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </motion.a>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Hero Section with Spline 3D Scene */}
       <section id="hero" className="min-h-screen flex flex-col justify-end relative">
