@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { BarChart3, Workflow, Users, Zap, Rocket } from 'lucide-react';
 import ProcessFlowAnimation from './ProcessFlowAnimation';
@@ -6,78 +6,7 @@ import ProfitVsCostChart from './ProfitVsCostChart';
 import Particles from './Particles';
 import styled from 'styled-components';
 
-// CountUp Component for animated number counting
-const CountUp: React.FC<{ end: number; duration: number; delay?: number; suffix?: string }> = ({ 
-  end, 
-  duration, 
-  delay = 0, 
-  suffix = "" 
-}) => {
-  const [count, setCount] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const element = document.querySelector('.engagement-metrics');
-    if (element) {
-      observer.observe(element);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!isVisible) return;
-
-    const timer = setTimeout(() => {
-      let startTime: number;
-      let animationFrame: number;
-
-      const animate = (currentTime: number) => {
-        if (!startTime) startTime = currentTime;
-        const progress = Math.min((currentTime - startTime) / (duration * 1000), 1);
-        
-        const currentCount = Math.floor(progress * end);
-        setCount(currentCount);
-
-        if (progress < 1) {
-          animationFrame = requestAnimationFrame(animate);
-        }
-      };
-
-      animationFrame = requestAnimationFrame(animate);
-
-      return () => {
-        if (animationFrame) {
-          cancelAnimationFrame(animationFrame);
-        }
-      };
-    }, delay * 1000);
-
-    return () => clearTimeout(timer);
-  }, [isVisible, end, duration, delay]);
-
-  const formatNumber = (num: number) => {
-    if (num >= 1000) {
-      return (num / 1000).toFixed(1) + 'K';
-    }
-    return num.toString();
-  };
-
-  return (
-    <span className="count-up-number">
-      {formatNumber(count)}{suffix}
-    </span>
-  );
-};
+// CountUp Component for animated number counting - removed unused component
 
 const services = [
   {
