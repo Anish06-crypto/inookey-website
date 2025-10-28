@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import Spline from '@splinetool/react-spline';
 
 interface SplineSceneAdvancedProps {
   className?: string;
@@ -139,20 +138,19 @@ const SplineSceneAdvanced: React.FC<SplineSceneAdvancedProps> = ({ className }) 
             return false;
           }}
         >
-          <Spline
-            className="spline-scene"
-            scene="https://prod.spline.design/YDfflhUHczfhClIJ/scene.splinecode"
-            onLoad={onLoad}
-            onMouseDown={onMouseDown}
-            onMouseUp={onMouseUp}
-            onMouseOver={onMouseOver}
+          <iframe
+            src="https://my.spline.design/nexbotrobotcharacterconcept-NpbRPB0ud7CSw3ytcwdPZprV/"
+            title="Inookey Hero 3D"
+            width="100%"
+            height="100%"
             style={{
+              border: '0',
               width: '100%',
               height: '100%',
-              // Let Spline handle responsiveness naturally
-              objectFit: 'contain',
-              pointerEvents: 'auto',
             }}
+            frameBorder={0}
+            allow="fullscreen"
+            onLoad={() => setIsLoading(false)}
           />
         </div>
       </motion.div>

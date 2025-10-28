@@ -196,16 +196,16 @@ const App: React.FC = () => {
                                            {/* Particles Overlay - On top of 3D scene */}
             <div className="absolute inset-0 z-15 pointer-events-none">
               <Particles 
-                particleCount={400}
-                particleSpread={25}
+                particleCount={600}
+                particleSpread={10}
                 speed={0.15}
                 particleColors={['#60a5fa', '#3b82f6', '#1d4ed8', '#1e40af', '#1e3a8a']}
                 moveParticlesOnHover={false}
                 particleHoverFactor={0}
                 alphaParticles={false}
-                particleBaseSize={80}
+                particleBaseSize={90}
                 sizeRandomness={0.4}
-                cameraDistance={15}
+                cameraDistance={18}
                 disableRotation={false}
                 className="w-full h-full"
               />
@@ -218,7 +218,7 @@ const App: React.FC = () => {
          <div className="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pb-20">
           {/* Main Headline */}
           <motion.h1 
-            className="text-xl md:text-3xl lg:text-4xl font-black mb-6 gradient-text leading-tight"
+            className="text-xl md:text-3xl lg:text-4xl font-black mb-6 text-white leading-tight"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
@@ -232,13 +232,13 @@ const App: React.FC = () => {
                 "MARKETING"
               ]}
               colorMap={{
-                "SOFTWARE": "#4169E1",      // Royal Blue
-                "AUTOMATION": "#006400",     // Dark Green
-                "SECURITY": "#8B0000",       // Deep Red
-                "MARKETING": "#FFD700"       // Yellow
+                "SOFTWARE": "#ffffff",
+                "AUTOMATION": "#ffffff",
+                "SECURITY": "#ffffff",
+                "MARKETING": "#ffffff"
               }}
               rotationInterval={2000}
-              mainClassName="text-xl md:text-3xl lg:text-4xl font-black gradient-text leading-tight"
+              mainClassName="text-xl md:text-3xl lg:text-4xl font-black text-white leading-tight"
               staggerDuration={0.05}
               splitBy="characters"
             />{" "}

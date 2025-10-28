@@ -53,7 +53,7 @@ const SplineScene: React.FC<SplineSceneProps> = ({ className }) => {
 
       // Create spline-viewer element
       const splineViewer = document.createElement('spline-viewer');
-      splineViewer.setAttribute('url', 'https://prod.spline.design/YDfflhUHczfhClIJ/scene.splinecode');
+      splineViewer.setAttribute('url', 'https://my.spline.design/nexbotrobotcharacterconcept-NpbRPB0ud7CSw3ytcwdPZprV/');
       splineViewer.style.width = '100%';
       splineViewer.style.height = '100%';
       splineViewer.style.position = 'absolute';

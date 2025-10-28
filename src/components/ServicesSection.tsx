@@ -219,7 +219,7 @@ const ServicesSection: React.FC = () => {
                         </div>
                       </div>
                       
-                      {/* Engagement Metrics */}
+                      {/* Engagement Metrics
                       <div className="engagement-metrics">
                         <div className="metric-item">
                           <div className="metric-icon likes-icon">❤️</div>
@@ -249,7 +249,7 @@ const ServicesSection: React.FC = () => {
                           </div>
                           <div className="metric-label">Views</div>
                         </div>
-                      </div>
+                      </div> */}
                     </StyledSocialCard>
                   </div>
                 </div>
