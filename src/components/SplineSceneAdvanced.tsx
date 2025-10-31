@@ -7,7 +7,7 @@ interface SplineSceneAdvancedProps {
 
 const SplineSceneAdvanced: React.FC<SplineSceneAdvancedProps> = ({ className }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const splineRef = useRef<any>(null);
+  // const splineRef = useRef<any>(null);
 
   // const onLoad = (splineApp: any) => {
   //   console.log('Spline scene loaded successfully');
