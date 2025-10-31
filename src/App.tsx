@@ -9,7 +9,6 @@ import VoiceAssistant from './components/VoiceAssistant';
 import BrandsSection from './components/BrandsSection';
 import Logo from './components/Logo';
 import Loader from './components/Loader';
-import RotatingText from './components/RotatingText';
 import Particles from './components/Particles';
 import { isAiChatEnabled, logFeatureFlags } from './config/features';
 
