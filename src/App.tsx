@@ -223,26 +223,8 @@ const App: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            WE BUILD SYSTEMS WHERE{" "}
-            <RotatingText
-              texts={[
-                "SOFTWARE",
-                "AUTOMATION",
-                "SECURITY",
-                "MARKETING"
-              ]}
-              colorMap={{
-                "SOFTWARE": "#ffffff",
-                "AUTOMATION": "#ffffff",
-                "SECURITY": "#ffffff",
-                "MARKETING": "#ffffff"
-              }}
-              rotationInterval={2000}
-              mainClassName="text-xl md:text-3xl lg:text-4xl font-black text-white leading-tight"
-              staggerDuration={0.05}
-              splitBy="characters"
-            />{" "}
-            CONNECT
+            INNOVATION IS KEY
+            
           </motion.h1>
 
           {/* Subheadline */}
