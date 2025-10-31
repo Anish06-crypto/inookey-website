@@ -9,31 +9,31 @@ const SplineSceneAdvanced: React.FC<SplineSceneAdvancedProps> = ({ className }) 
   const [isLoading, setIsLoading] = useState(true);
   const splineRef = useRef<any>(null);
 
-  const onLoad = (splineApp: any) => {
-    console.log('Spline scene loaded successfully');
-    splineRef.current = splineApp;
-    setIsLoading(false);
-  };
+  // const onLoad = (splineApp: any) => {
+  //   console.log('Spline scene loaded successfully');
+  //   splineRef.current = splineApp;
+  //   setIsLoading(false);
+  // };
 
-  const onMouseDown = (e: any) => {
-    console.log('Mouse down on Spline scene', e);
-    // Prevent any default actions
-    e.preventDefault();
-    e.stopPropagation();
-  };
+  // const onMouseDown = (e: any) => {
+  //   console.log('Mouse down on Spline scene', e);
+  //   // Prevent any default actions
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  // };
 
-  const onMouseUp = (e: any) => {
-    console.log('Mouse up on Spline scene', e);
-    // Prevent any default actions
-    e.preventDefault();
-    e.stopPropagation();
-  };
+  // const onMouseUp = (e: any) => {
+  //   console.log('Mouse up on Spline scene', e);
+  //   // Prevent any default actions
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  // };
 
-  const onMouseOver = (e: any) => {
-    console.log('Mouse over on Spline scene', e);
-    // Allow hover interactions but prevent any redirects
-    e.stopPropagation();
-  };
+  // const onMouseOver = (e: any) => {
+  //   console.log('Mouse over on Spline scene', e);
+  //   // Allow hover interactions but prevent any redirects
+  //   e.stopPropagation();
+  // };
 
   // Prevent any clicks on the container
   const handleContainerClick = (e: React.MouseEvent) => {
